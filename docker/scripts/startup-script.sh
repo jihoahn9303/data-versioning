@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-echo "Hello!"
+while true; do sleep 1; done

@@ -23,12 +23,12 @@ RUN mkdir -p /usr/local/gcloud \
     && tar -C /usr/local/gcloud -zxvf /tmp/google-cloud-cli-462.0.1-linux-x86_64.tar.gz \
     && /usr/local/gcloud/google-cloud-sdk/install.sh --usage-reporting false --command-completion true --bash-completion true --path-update true --quiet
 
-RUN mkdir -p ${HOME} /app 
+RUN mkdir -p /app 
 COPY . /app/
 
 RUN chmod a+x /app/docker/scripts/*.sh
 RUN addgroup --system --gid ${USER_ID} ${USER_NAME} \
-    && useradd --system --no-log-init \
+    && useradd --system -m --no-log-init \
     --home-dir ${HOME} \
     --uid ${USER_ID} \
     --gid ${USER_NAME} \
@@ -37,7 +37,7 @@ RUN addgroup --system --gid ${USER_ID} ${USER_NAME} \
 
 RUN chown -R ${USER_NAME}:${USER_NAME} /app /tmp ${HOME} 
 
-USER ${USER_NAME}:${USER_NAME}
+USER ${USER_NAME}
 RUN curl -sSL https://install.python-poetry.org | python3 -
     
 WORKDIR /app
@@ -45,10 +45,9 @@ RUN poetry config virtualenvs.create false \
     && python3.10 -m venv ${VIRTUAL_ENV} \
     && pip install --upgrade pip setuptools \
     && poetry install \
-    && cp poetry.lock ${BUILD_POETRY_LOCK} \
-    && rm -rf ${HOME}/.cache/*
+    && cp poetry.lock ${BUILD_POETRY_LOCK} 
+    && rm -rf ${HOME}/.cache/* \
 
-# ENTRYPOINT ["/bin/bash", "-c", "while true; do sleep 1; done"]
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["/app/docker/scripts/startup-script.sh"]
 
