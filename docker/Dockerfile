@@ -45,8 +45,11 @@ RUN poetry config virtualenvs.create false \
     && python3.10 -m venv ${VIRTUAL_ENV} \
     && pip install --upgrade pip setuptools \
     && poetry install \
-    && cp poetry.lock ${BUILD_POETRY_LOCK} 
-    && rm -rf ${HOME}/.cache/* \
+    && cp poetry.lock ${BUILD_POETRY_LOCK} \
+    && rm -rf ${HOME}/.cache/* 
+
+RUN git config --global user.email "rediate03@gmail.com" \
+    && git config --global user.name "jihoahn9303"
 
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["/app/docker/scripts/startup-script.sh"]
