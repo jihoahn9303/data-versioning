@@ -49,8 +49,9 @@ def update_git_and_dvc(dvc_raw_data_folder: str, dvc_remote_name: str) -> None:
         
 def update_data_version(dvc_raw_data_folder: str, dvc_remote_name: str) -> None:
     try:
-        status = run_shell_command(f"dvc status list {dvc_raw_data_folder}.dvc")
+        status = run_shell_command(f"dvc status {dvc_raw_data_folder}.dvc")
         if status == "Data and pipelines are up to date.\n":
+            DATA_UTILS_LOGGER.info("Data and pipelines are up to date.")
             return  
         update_git_and_dvc(dvc_raw_data_folder, dvc_remote_name)
     except CalledProcessError:
