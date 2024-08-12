@@ -16,7 +16,7 @@ def version_data(config: Config) -> None:
     )
     update_data_version(
         dvc_raw_data_folder=config.dvc_raw_data_folder,
-        dvc_remote_name="config.dvc_remote_name"
+        dvc_remote_name=config.dvc_remote_name
     )
 
 if __name__ == "__main__":
